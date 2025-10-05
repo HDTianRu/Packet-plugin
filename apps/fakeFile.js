@@ -21,7 +21,7 @@ const sizeToBytes = size => {
     'e': 1024n ** 6n,
   }
 
-  const match = size.toLowerCase().match(/^(\d+)([bkmgtpe]{0,2})$/)
+  const match = size.toLowerCase().match(/^(\d+(?:\.\d+)?)([bkmgtpe]{0,1})b?$/)
   if (!match) {
     return MAX_VALUE
   }
@@ -40,7 +40,7 @@ const sizeToBytes = size => {
   if (result > MAX_VALUE) {
     return MAX_VALUE
   }
-  return result
+  return BigInt(result.toString().split(".")[0])
 }
 
 export class fakeFile extends plugin {
