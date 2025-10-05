@@ -28,7 +28,7 @@ const sizeToBytes = size => {
   const [, numericPart, unitPart] = match
   let num
   try {
-    num = BigInt(numericPart)
+    num = BigInt(Math.floor(Number(numericPart)))
   } catch (error) {
     return MAX_VALUE
   }
@@ -40,7 +40,7 @@ const sizeToBytes = size => {
   if (result > MAX_VALUE) {
     return MAX_VALUE
   }
-  return BigInt(result.toString().split(".")[0])
+  return result
 }
 
 export class fakeFile extends plugin {
