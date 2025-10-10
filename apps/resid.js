@@ -13,12 +13,10 @@ export class resid extends plugin {
       priority: 1000,
       rule: [{
         reg: "^#转id\\s*{.*",
-        fnc: "send",
-        permission: "master"
+        fnc: "send"
       }, {
         reg: "^#取id[\\s\\S]*",
-        fnc: "recv",
-        permission: "master"
+        fnc: "recv"
       }]
     })
   }
