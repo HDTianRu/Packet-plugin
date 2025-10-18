@@ -28,14 +28,22 @@ export class getMsg extends plugin {
       !!reply.real_seq
     )
     const msg = [
-      ["msg array:",
-      JSON.stringify(reply.message, null, 2)],
-      ["msg raw:",
-      JSON.stringify(reply, null, 2)],
-      ["pb elem:",
-      JSON.stringify(data["3"]["6"]["3"]["1"]["2"][0], replacer, 2)],
-      ["pb raw:",
-      JSON.stringify(data, replacer, 2)]
+      [
+        "msg array:",
+        JSON.stringify(reply.message, null, 2)
+      ],
+      [
+        "msg raw:",
+        JSON.stringify(JSON.parse(reply.raw), null, 2)
+      ],
+      [
+        "pb elem:",
+        JSON.stringify(data["3"]["6"]["3"]["1"]["2"][0], replacer, 2)
+      ],
+      [
+        "pb raw:",
+        JSON.stringify(data, replacer, 2)
+      ]
     ].map(i => common.makeForwardMsg(e, i))
     await Promise.all(msg)
     e.reply(await common.makeForwardMsg(e, msg))
