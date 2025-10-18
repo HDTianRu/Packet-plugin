@@ -52,7 +52,8 @@ export class fakeFile extends plugin {
       priority: 0,
       rule: [{
         reg: "^#文件.*",
-        fnc: "make"
+        fnc: "make",
+        permission: "master"
       }]
     })
   }
