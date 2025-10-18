@@ -34,30 +34,33 @@ export class sendPacket extends plugin {
 
   async api(e) {
     let index = e.msg.indexOf("\n")
-    e.bot.sendApi(e.msg.substring(3, index).trim(), JSON.parse(e.msg.substring(index).trim())
-    }
-
-    async pb(e) {
-      Elem(
-        e,
-        processJSON(e.msg.substring(3).trim())
-      )
-    }
-
-    async pbl(e) {
-      Long(
-        e,
-        processJSON(e.msg.substring(4).trim())
-      )
-    }
-
-    async raw(e) {
-      let index = e.msg.indexOf("\n")
-      const resp = await Send(
-        e,
-        e.msg.substring(4, index).trim(),
-        processJSON(e.msg.substring(index).trim())
-      )
-      e.reply(JSON.stringify(resp, replacer, 2))
-    }
+    e.bot.sendApi(
+      e.msg.substring(3, index).trim(),
+      JSON.parse(e.msg.substring(index).trim())
+    )
   }
+
+  async pb(e) {
+    Elem(
+      e,
+      processJSON(e.msg.substring(3).trim())
+    )
+  }
+
+  async pbl(e) {
+    Long(
+      e,
+      processJSON(e.msg.substring(4).trim())
+    )
+  }
+
+  async raw(e) {
+    let index = e.msg.indexOf("\n")
+    const resp = await Send(
+      e,
+      e.msg.substring(4, index).trim(),
+      processJSON(e.msg.substring(index).trim())
+    )
+    e.reply(JSON.stringify(resp, replacer, 2))
+  }
+}
