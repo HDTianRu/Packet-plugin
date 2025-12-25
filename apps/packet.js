@@ -40,7 +40,7 @@ export class sendPacket extends plugin {
       JSON.parse(e.msg.substring(index).trim())
     )
     const msg = JSON.stringify(resp.data, null, 2)
-    if (msg.length >= 250) e.reply(await common.makeForwardMsg(e, msg))
+    if (msg.length >= /*0*/721) e.reply(await common.makeForwardMsg(e, msg))
     else e.reply(msg)
   }
 
@@ -65,6 +65,8 @@ export class sendPacket extends plugin {
       e.msg.substring(4, index).trim(),
       processJSON(e.msg.substring(index).trim())
     )
-    e.reply(JSON.stringify(resp, replacer, 2))
+    const msg = JSON.stringify(resp, replacer, 2)
+    if (msg.length >= /*0*/721) e.reply(await common.makeForwardMsg(e, msg))
+    else e.reply(msg)
   }
 }
