@@ -19,9 +19,9 @@ export class getMsg extends plugin {
 
   async get(e) {
     if (!e.reply_id) return e.reply("请回复要取的消息")
-    const reply = await e.bot.sendApi('get_msg', {
+    const reply = (await e.bot.sendApi('get_msg', {
       message_id: e.reply_id
-    })
+    }))?.data
     const data = await get(
       e,
       reply.real_seq ?? e.reply_id,
@@ -34,7 +34,7 @@ export class getMsg extends plugin {
       ],
       [
         "msg raw:",
-        JSON.stringify(JSON.parse(reply.raw), null, 2)
+        JSON.stringify(reply, null, 2)
       ],
       [
         "pb elem:",

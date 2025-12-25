@@ -194,55 +194,29 @@ export const getMsg = async (
 // 仅用于方便用户手动输入pb时使用，一般不需要使用
 export const processJSON = (json) => _processJSON(typeof json === 'string' ? JSON.parse(json) : json)
 
-function _processJSON(json, path = []){
-  const result = {}
-  if (Buffer.isBuffer(json) || json instanceof Uint8Array) {
-    return json
-  } else if (Array.isArray(json)) {
-    return json.map((item, index) => processJSON(item, path.concat(index + 1)))
-  } else if (typeof json === "object" && json !== null) {
-    for (const key in json) {
-      const numKey = Number(key)
-      if (Number.isNaN(numKey)) {
-        throw new Error(`Key is not a valid integer: ${key}`)
-      }
-      const currentPath = path.concat(key)
-      const value = json[key]
+function _processJSON(obj) {
+  if (Buffer.isBuffer(obj) || obj instanceof Uint8Array || obj === null) return obj
 
-      if (typeof value === "object" && value !== null) {
-        if (Array.isArray(value)) {
-          result[numKey] = value.map((item, idx) =>
-            processJSON(item, currentPath.concat(String(idx + 1)))
-          )
-        } else {
-          result[numKey] = processJSON(value, currentPath)
-        }
-      } else {
-        if (typeof value === "string") {
-          if (value.startsWith("hex->")) {
-            const hexStr = value.slice("hex->".length)
-            if (isHexString(hexStr)) {
-              result[numKey] = Buffer.from(hexStr, "hex")
-            } else {
-              result[numKey] = value
-            }
-          } else if (
-            currentPath.slice(-2).join(",") === "5,2" &&
-            isHexString(value)
-          ) {
-            result[numKey] = Buffer.from(value, "hex")
-          } else {
-            result[numKey] = value
-          }
-        } else {
-          result[numKey] = value
-        }
-      }
-    }
-  } else {
-    return json
+  if (Array.isArray(obj)) return obj.map(_processJSON)
+
+  switch (typeof obj) {
+    case "string":
+      if (!obj.startsWith("hex->")) return obj
+      const hexStr = obj.slice(5)
+      return (isHexString(hexStr) ?
+        Buffer.from(hexStr, "hex") :
+        value)
+
+    case "object":
+      return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
+        const numKey = Number(key)
+        if (Number.isNaN(numKey) || !Number.isInteger(numKey) || numKey <= 0) throw new Error(`Key is not valid: ${key}`)
+        return [numKey, _processJSON(value)]
+      }))
+
+    default:
+      return obj
   }
-  return result
 }
 
 function isHexString(s) {

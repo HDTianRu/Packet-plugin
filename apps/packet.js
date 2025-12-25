@@ -38,7 +38,7 @@ export class sendPacket extends plugin {
       e.msg.substring(4, index).trim(),
       JSON.parse(e.msg.substring(index).trim())
     )
-    e.reply(JSON.stringify(resp, null, 2))
+    e.reply(JSON.stringify(resp.data, null, 2))
   }
 
   async pb(e) {
