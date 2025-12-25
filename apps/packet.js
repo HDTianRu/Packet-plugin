@@ -5,6 +5,7 @@ import {
   processJSON,
   replacer
 } from '../model/PacketHelper.js'
+import common from '../../../lib/common/common.js'
 
 export class sendPacket extends plugin {
   constructor() {
@@ -38,7 +39,9 @@ export class sendPacket extends plugin {
       e.msg.substring(4, index).trim().replace("/", ""),
       JSON.parse(e.msg.substring(index).trim())
     )
-    e.reply(JSON.stringify(resp.data, null, 2))
+    const msg = JSON.stringify(resp.data, null, 2)
+    if (msg.length >= 250) e.reply(await common.makeForwardMsg(e, msg))
+    else e.reply(msg)
   }
 
   async pb(e) {
