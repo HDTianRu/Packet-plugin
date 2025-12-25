@@ -35,7 +35,7 @@ export class sendPacket extends plugin {
   async api(e) {
     let index = e.msg.indexOf("\n")
     const resp = await e.bot.sendApi(
-      e.msg.substring(4, index).trim(),
+      e.msg.substring(4, index).trim().replace("/", ""),
       JSON.parse(e.msg.substring(index).trim())
     )
     e.reply(JSON.stringify(resp.data, null, 2))
