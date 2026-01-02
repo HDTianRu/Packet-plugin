@@ -194,6 +194,10 @@ export const getMsg = async (
 // 仅用于方便用户手动输入pb时使用，一般不需要使用
 export const processJSON = (json) => _processJSON(typeof json === 'string' ? JSON.parse(json) : json)
 
+const funList = {
+  "$encode": (obj) => encode(processJSON(obj))
+}
+
 function _processJSON(obj) {
   if (Buffer.isBuffer(obj) || obj instanceof Uint8Array || obj === null) return obj
 
@@ -208,6 +212,8 @@ function _processJSON(obj) {
         value)
 
     case "object":
+      const fun = funList[Object.keys(obj)?.[0]]
+      if (fun) return fun(obj)
       return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         const numKey = Number(key)
         if (Number.isNaN(numKey) || !Number.isInteger(numKey) || numKey <= 0) throw new Error(`Key is not valid: ${key}`)
