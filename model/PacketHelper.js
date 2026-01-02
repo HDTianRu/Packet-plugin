@@ -195,7 +195,7 @@ export const getMsg = async (
 export const processJSON = (json) => _processJSON(typeof json === 'string' ? JSON.parse(json) : json)
 
 const funList = {
-  "$encode": (obj) => encode(processJSON(obj))
+  "$encode": encode
 }
 
 function _processJSON(obj) {
@@ -217,7 +217,7 @@ function _processJSON(obj) {
       if (fun) return fun(obj[keys[0]])
       return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         const numKey = Number(key)
-        if (Number.isNaN(numKey) || !Number.isInteger(numKey) || numKey <= 0) throw new Error(`Key is not valid: ${key}`)
+        if (Number.isNaN(numKey) || !Number.isInteger(numKey) || numKey < 0) throw new Error(`Key is not valid: ${key}`)
         return [numKey, _processJSON(value)]
       }))
 
