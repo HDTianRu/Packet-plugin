@@ -213,8 +213,8 @@ function _processJSON(obj) {
 
     case "object":
       const keys = Object.keys(obj)
-      const fun = keys.length === 1 ? funList[key[0]] : null
-      if (fun) return fun(obj[key[0]])
+      const fun = keys.length === 1 ? funList[keys[0]] : null
+      if (fun) return fun(obj[keys[0]])
       return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         const numKey = Number(key)
         if (Number.isNaN(numKey) || !Number.isInteger(numKey) || numKey <= 0) throw new Error(`Key is not valid: ${key}`)
