@@ -15,25 +15,22 @@ export class sendPacket extends plugin {
       priority: 1000,
       rule: [{
         reg: "^#(api|API)[\\s\\S]*{.*",
-        fnc: "api",
-        permission: "master"
+        fnc: "api"
       }, {
         reg: "^#(pb|PB)\\s*{.*",
-        fnc: "pb",
-        permission: "master"
+        fnc: "pb"
       }, {
         reg: "^#(pbl|PBL)\\s*{.*",
-        fnc: "pbl",
-        permission: "master"
+        fnc: "pbl"
       }, {
         reg: "^#(raw|RAW)[\\s\\S]*{.*",
-        fnc: "raw",
-        permission: "master"
+        fnc: "raw"
       }]
     })
   }
 
   async api(e) {
+    if (!this.e.isMaster) return true
     let index = e.msg.indexOf("\n")
     const resp = await e.bot.sendApi(
       e.msg.substring(4, index).trim().replace("/", ""),
@@ -45,6 +42,7 @@ export class sendPacket extends plugin {
   }
 
   async pb(e) {
+    if (!this.e.isMaster) return true
     Elem(
       e,
       processJSON(e.msg.substring(3).trim())
@@ -52,6 +50,7 @@ export class sendPacket extends plugin {
   }
 
   async pbl(e) {
+    if (!this.e.isMaster) return true
     Long(
       e,
       processJSON(e.msg.substring(4).trim())
@@ -59,6 +58,7 @@ export class sendPacket extends plugin {
   }
 
   async raw(e) {
+    if (!this.e.isMaster) return true
     let index = e.msg.indexOf("\n")
     const resp = await Send(
       e,

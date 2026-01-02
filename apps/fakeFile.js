@@ -52,14 +52,14 @@ export class fakeFile extends plugin {
       priority: 0,
       rule: [{
         reg: "^#文件.*",
-        fnc: "make",
-        permission: "master"
+        fnc: "make"
       }]
     })
   }
 
 
   async make(e) {
+    if (!this.e.isMaster) return true
     const match = e.msg.match(/^#文件\s*(.+)\s+(\d+[bkmgtpe]{0,2})/i)
     if (!match) {
       await e.reply('格式错误，请使用 "#文件 文件名 文件大小"')
