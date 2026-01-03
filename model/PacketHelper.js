@@ -20,7 +20,7 @@ export const Proto = pb
 
 export const replacer = (key, value) => {
   if (typeof value === 'bigint') {
-    return Number(value) >= Number.MAX_SAFE_INTEGER ? value.toString() : Number(value);
+    return Number.isSafeInteger(Number(value)) ? Number(value) : `${value.toString()}L`
   } else if (Buffer.isBuffer(value)) {
     return `hex->${value.toString('hex')}`
   } else if (value?.type === 'Buffer' && Array.isArray(value.data)) {
@@ -222,11 +222,11 @@ function _processJSON(obj) {
 
   switch (typeof obj) {
     case "string":
-      if (!obj.startsWith("hex->")) return obj
-      const hexStr = obj.slice(5)
-      return (isHexString(hexStr) ?
-        Buffer.from(hexStr, "hex") :
-        value)
+      if (obj.startsWith("hex->") && isHexString(obj.slice(5)))
+        return Buffer.from(obj.slice(5), "hex")
+      if (/^[0-9]+L$/.test(obj))
+        return BigInt(obj.slice(0, -1))
+      return obj
 
     case "object":
       const keys = Object.keys(obj)
