@@ -60,7 +60,7 @@ export const SendRaw = async (
     const data = typeof content === 'buffer' ? content.toString("hex") : content
     const req = await e.bot.sendApi('send_packet', {
       cmd: cmd,
-      data: Buffer.from(data).toString("hex")
+      data: content
     })
     return pb.decode(req.data)
   } catch (error) {
