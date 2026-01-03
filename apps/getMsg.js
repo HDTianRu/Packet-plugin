@@ -27,8 +27,8 @@ export class getMsg extends plugin {
       reply.real_seq ?? e.reply_id,
       !!reply.real_seq
     )
-    const del = [37, 9, 16]
-    const elems = Object.fromEntries(Object.entries(data["3"]?.["6"]?.["3"]?.["1"]?.["2"] ?? []).filter(i => !del.includes(Object.keys(i)?.[0])))
+    const del = ["37", "9", "16"]
+    const elems = (data["3"]?.["6"]?.["3"]?.["1"]?.["2"] ?? []).filter(i => !del.includes(Object.keys(i)?.[0]))
     const msg = [
       [
         "msg array:",
