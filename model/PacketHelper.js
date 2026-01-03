@@ -16,6 +16,11 @@ const gunzip = promisify(_gunzip)
 
 const RandomUInt = () => crypto.randomBytes(4).readUInt32BE()
 
+const getKey = (obj) => {
+  const keys = Object.keys(obj)
+  return keys.length === 1 ? keys[0] : undefined
+}
+
 export const Proto = pb
 
 export const replacer = (key, value) => {
@@ -229,9 +234,9 @@ function _processJSON(obj) {
       return obj
 
     case "object":
-      const keys = Object.keys(obj)
-      const fun = keys.length === 1 ? funList[keys[0]] : null
-      if (fun) return fun(obj[keys[0]])
+      const key = getKey(obj)
+      const fun = funList[key]
+      if (fun) return fun(obj[key])
       return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
         const numKey = Number(key)
         if (Number.isNaN(numKey) || !Number.isInteger(numKey) || numKey < 0) throw new Error(`Key is not valid: ${key}`)
