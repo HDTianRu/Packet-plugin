@@ -51,6 +51,23 @@ export const Send = async (
   }
 }
 
+export const SendRaw = async (
+  e,
+  cmd,
+  content
+) => {
+  try {
+    const data = typeof content === 'buffer' ? content.toString("hex") : content
+    const req = await e.bot.sendApi('send_packet', {
+      cmd: cmd,
+      data: Buffer.from(data).toString("hex")
+    })
+    return pb.decode(req.data)
+  } catch (error) {
+    logger.error(`sendMessage failed: ${error.message}`, error)
+  }
+}
+
 export const Elem = async (
   e,
   content

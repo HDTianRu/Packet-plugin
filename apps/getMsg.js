@@ -27,6 +27,8 @@ export class getMsg extends plugin {
       reply.real_seq ?? e.reply_id,
       !!reply.real_seq
     )
+    const del = [37, 9, 16]
+    const elems = Object.fromEntries(Object.entries(data["3"]?.["6"]?.["3"]?.["1"]?.["2"] ?? []).filter(i => !del.includes(Object.keys(i)?.[0])))
     const msg = [
       [
         "msg array:",
@@ -38,7 +40,7 @@ export class getMsg extends plugin {
       ],
       [
         "pb elem:",
-        JSON.stringify(data["3"]["6"]["3"]["1"]["2"][0], replacer, 2)
+        JSON.stringify(elems ?? ["无elem元素"], replacer, 2)
       ],
       [
         "pb raw:",
